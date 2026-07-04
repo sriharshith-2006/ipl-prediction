@@ -1,0 +1,21 @@
+# Data
+data/raw/*
+data/processed/*
+
+# Keep folders
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Models
+models/*.pkl
+models/*.joblib
+
+# Virtual environments
+venv/
+.venv/
+env/
