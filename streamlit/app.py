@@ -1,5 +1,4 @@
 import streamlit as st
-
 st.set_page_config(
     page_title="IPL Prediction System",
     page_icon="🏏",
@@ -277,9 +276,172 @@ if page == "Home":
     )
 elif page == "Match Winner Prediction":
     st.title(" Match Winner Prediction")
-    st.subheader("Predict the winner of the match before it starts")
-    st.info("Add your prediction form / FastAPI call here.")
+    st.caption("Predict Match Winner based on the toss status")
+    st.subheader("Enter Match Details")
+    st.divider()
+    col1,col2=st.columns(2)
+    with col1:
+        batting_team = st.selectbox(
+        "Batting Team",
+        [   "Select Team",
+            "Chennai Super Kings",
+            "Mumbai Indians",
+            "Royal Challengers Bengaluru",
+            "Kolkata Knight Riders",
+            "Sunrisers Hyderabad",
+            "Delhi Capitals",
+            "Punjab Kings",
+            "Rajasthan Royals",
+            "Lucknow Super Giants",
+            "Gujarat Titans"
+        ]
+    )
+        bowling_team = st.selectbox(
+        "Bowling Team",
+        [   "Select Team",
+            "Chennai Super Kings",
+            "Mumbai Indians",
+            "Royal Challengers Bengaluru",
+            "Kolkata Knight Riders",
+            "Sunrisers Hyderabad",
+            "Delhi Capitals",
+            "Punjab Kings",
+            "Rajasthan Royals",
+            "Lucknow Super Giants",
+            "Gujarat Titans"
+        ]
+    )
+        toss_winner = st.selectbox(
+        "Toss Winner",
+        [   "Select Team",
+            "Chennai Super Kings",
+            "Mumbai Indians",
+            "Royal Challengers Bengaluru",
+            "Kolkata Knight Riders",
+            "Sunrisers Hyderabad",
+            "Delhi Capitals",
+            "Punjab Kings",
+            "Rajasthan Royals",
+            "Lucknow Super Giants",
+            "Gujarat Titans"
+        ]
+    )
+        stage=st.selectbox(
+            "Stage",[
+                "group stage","Qualifier 1","Qualifier 2","Eliminator","Final"
+            ]
+    )
+    with col2:
+        venue=st.selectbox("Venue",["Select Venue",
+            "MA Chidambaram Stadium",
+            "Wankhede Stadium",
+            "M Chinnaswamy Stadium",
+            "Eden Gardens",
+            "Rajiv Gandhi International Stadium",
+            "Sawai Mansingh Stadium",
+            "Arun Jaitley Stadium",
+            "Punjab Cricket Association Stadium",
+            "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium",
+            "Narendra Modi Stadium"
+        ])
+        city=st.text_input("City")
+        season = st.number_input(
+        "Season",
+        min_value=2008,
+        max_value=2035,
+    )
+        match_date = st.date_input(
+        "Match Date",
+        value=None,
+        format="YYYY-MM-DD"
+    )
+       
+    predict=st.button("Predict Match Winner",use_container_width=True)
+    if predict:
+        st.success("Succesfully entered details")
 elif page == "Live Win Probability Prediction":
     st.title("Live Win Probability")
-    st.subheader("Predict the probability of winning based on current match status")
-    st.info("Add your live prediction form / FastAPI call here.")
+    st.caption("Predict the probability of winning based on current match status")
+    st.subheader("Enter Match Details")
+    st.divider()
+    col1,col2=st.columns(2)
+    with col1:
+        innings=st.number_input("Innings")
+        batting_team = st.selectbox(
+        "Batting Team",
+        [   "Select Team",
+            "Chennai Super Kings",
+            "Mumbai Indians",
+            "Royal Challengers Bengaluru",
+            "Kolkata Knight Riders",
+            "Sunrisers Hyderabad",
+            "Delhi Capitals",
+            "Punjab Kings",
+            "Rajasthan Royals",
+            "Lucknow Super Giants",
+            "Gujarat Titans"
+        ]
+    )
+        bowling_team = st.selectbox(
+        "Bowling Team",
+        [   "Select Team",
+            "Chennai Super Kings",
+            "Mumbai Indians",
+            "Royal Challengers Bengaluru",
+            "Kolkata Knight Riders",
+            "Sunrisers Hyderabad",
+            "Delhi Capitals",
+            "Punjab Kings",
+            "Rajasthan Royals",
+            "Lucknow Super Giants",
+            "Gujarat Titans"
+        ]
+    )
+        venue=st.selectbox("Venue",["Select Venue",
+            "MA Chidambaram Stadium",
+            "Wankhede Stadium",
+            "M Chinnaswamy Stadium",
+            "Eden Gardens",
+            "Rajiv Gandhi International Stadium",
+            "Sawai Mansingh Stadium",
+            "Arun Jaitley Stadium",
+            "Punjab Cricket Association Stadium",
+            "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium",
+            "Narendra Modi Stadium"
+        ])
+    with col2:
+        team_runs = st.number_input(
+            "Current Team Runs",
+            min_value=0,
+            value=0,
+            step=1,
+            format="%d"
+        )
+
+        team_wicket = st.number_input(
+            "Current Team Wicket",
+            min_value=0,
+            max_value=10,
+            value=0,
+            step=1,
+            format="%d"
+        )
+        team_balls = st.number_input(
+            "Number of Balls Till Now",
+            min_value=0,
+            max_value=120,
+            value=0,
+            step=1,
+            format="%d"
+        )
+        runs_target = st.number_input(
+            "Target",
+            min_value=1,
+            value=1,
+            step=1,
+            format="%d"
+        )
+    predict=st.button("Predict Live win probability",use_container_width=True)
+    if predict:
+            st.success("Ok")
+    
