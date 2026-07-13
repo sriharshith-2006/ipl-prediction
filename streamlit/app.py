@@ -1,14 +1,14 @@
 import streamlit as st
+import requests
+from datetime import date
 st.set_page_config(
     page_title="IPL Prediction System",
     page_icon="🏏",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 st.markdown("""
 <style>
-
 :root{
     --navy: #16213E;
     --navy-deep: #0B1224;
@@ -326,6 +326,7 @@ elif page == "Match Winner Prediction":
             "Gujarat Titans"
         ]
     )
+        toss_decision=st.selectbox("Toss Decision",["Select","bat","field"])
         stage=st.selectbox(
             "Stage",[
                 "group stage","Qualifier 1","Qualifier 2","Eliminator","Final"
@@ -344,21 +345,164 @@ elif page == "Match Winner Prediction":
             "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium",
             "Narendra Modi Stadium"
         ])
-        city=st.text_input("City")
-        season = st.number_input(
-        "Season",
-        min_value=2008,
-        max_value=2035,
-    )
+        city = st.selectbox(
+            "City",
+            [
+                "Ahmedabad",
+                "Abu Dhabi",
+                "Bangalore",
+                "Chandigarh",
+                "Chennai",
+                "Delhi",
+                "Dubai",
+                "Dharamsala",
+                "Hyderabad",
+                "Kolkata",
+                "Lucknow",
+                "Mumbai",
+                "Pune",
+                "Jaipur",
+                "Sharjah",
+                "Visakhapatnam"
+            ],
+            index=None,
+            placeholder="Select City"
+        )
+
+        season = st.text_input(
+        "Season")
         match_date = st.date_input(
         "Match Date",
         value=None,
+        min_value=date(2008, 1, 1),
+        max_value=date(2030, 12, 31),
         format="YYYY-MM-DD"
-    )
-       
+    )  
     predict=st.button("Predict Match Winner",use_container_width=True)
+    payload={
+        "batting_team": batting_team,
+        "bowling_team": bowling_team,
+        "toss_winner": toss_winner,
+        "toss_decision":toss_decision,
+        "venue": venue,
+        "city": city,
+        "season": season,
+        "stage": stage,
+        "date":str(match_date)
+        }
+    response=requests.post("http://127.0.0.1:8000/match_winner_predict",json=payload)
+    team_colors = {
+    "Chennai Super Kings": "#F9CD05",
+    "Mumbai Indians": "#004BA0",
+    "Royal Challengers Bengaluru": "#D71920",
+    "Sunrisers Hyderabad": "#F26522",
+    "Kolkata Knight Riders": "#3A225D",
+    "Delhi Capitals": "#17449B",
+    "Rajasthan Royals": "#EA1A85",
+    "Punjab Kings": "#D71920",
+    "Lucknow Super Giants": "#00A651",
+    "Gujarat Titans": "#1C2957"
+}
     if predict:
-        st.success("Succesfully entered details")
+        result = response.json()
+        Winner = result["Predicted Winner"]
+        st.divider()
+        color = team_colors.get(Winner, "#1565C0")
+        def darken(hex_color, factor=0.55):
+            hex_color = hex_color.lstrip("#")
+            r, g, b = (int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+            r, g, b = int(r*factor), int(g*factor), int(b*factor)
+            return f"#{r:02x}{g:02x}{b:02x}"
+        dark_shade = darken(color)
+        st.markdown(
+            f"""
+            <style>
+            @keyframes floatTrophy {{
+                0%   {{ transform: translateY(0px) rotate(0deg); }}
+                50%  {{ transform: translateY(-8px) rotate(-4deg); }}
+                100% {{ transform: translateY(0px) rotate(0deg); }}
+            }}
+            @keyframes shimmer {{
+                0%   {{ background-position: -300px 0; }}
+                100% {{ background-position: 300px 0; }}
+            }}
+            @keyframes fadeInUp {{
+                0%   {{ opacity: 0; transform: translateY(20px); }}
+                100% {{ opacity: 1; transform: translateY(0); }}
+            }}
+
+            .winner-card {{
+                position: relative;
+                background: linear-gradient(135deg, {color} 0%, {dark_shade} 100%);
+                padding: 40px 30px;
+                border-radius: 22px;
+                text-align: center;
+                color: #ffffff;
+                box-shadow: 0 12px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.08) inset;
+                overflow: hidden;
+                animation: fadeInUp 0.6s ease-out;
+                border: 1px solid rgba(255,255,255,0.15);
+            }}
+
+            .winner-card::before {{
+                content: "";
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: linear-gradient(
+                    120deg,
+                    rgba(255,255,255,0) 30%,
+                    rgba(255,255,255,0.15) 50%,
+                    rgba(255,255,255,0) 70%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 3.5s infinite linear;
+                pointer-events: none;
+            }}
+
+            .winner-label {{
+                display: inline-block;
+                font-size: 15px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: rgba(255,255,255,0.85);
+                margin-bottom: 6px;
+            }}
+
+            .winner-trophy {{
+                font-size: 46px;
+                display: block;
+                animation: floatTrophy 2.4s ease-in-out infinite;
+                filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
+                margin-bottom: 4px;
+            }}
+
+            .winner-name {{
+                font-size: 40px;
+                font-weight: 800;
+                margin: 8px 0 0 0;
+                color: #ffffff;
+                text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+                letter-spacing: 0.5px;
+                line-height: 1.2;
+            }}
+
+            .winner-sub {{
+                margin-top: 14px;
+                font-size: 13px;
+                color: rgba(255,255,255,0.75);
+                letter-spacing: 1px;
+            }}
+            </style>
+
+            <div class="winner-card">
+                <span class="winner-trophy">🏆</span>
+                <span class="winner-label">Predicted Winner</span>
+                <h1 class="winner-name">{Winner}</h1>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 elif page == "Live Win Probability Prediction":
     st.title("Live Win Probability")
     st.caption("Predict the probability of winning based on current match status")
@@ -366,7 +510,11 @@ elif page == "Live Win Probability Prediction":
     st.divider()
     col1,col2=st.columns(2)
     with col1:
-        innings=st.number_input("Innings")
+        innings=st.number_input(
+            "Innings",
+            value=2,
+            format="%d"
+        )
         batting_team = st.selectbox(
         "Batting Team",
         [   "Select Team",
@@ -410,23 +558,22 @@ elif page == "Live Win Probability Prediction":
             "Narendra Modi Stadium"
         ])
     with col2:
-        team_runs = st.number_input(
+        team_runs=st.number_input(
             "Current Team Runs",
             min_value=0,
             value=0,
             step=1,
             format="%d"
         )
-
-        team_wicket = st.number_input(
-            "Current Team Wicket",
+        team_wicket=st.number_input(
+            "Current Team Wickets",
             min_value=0,
             max_value=10,
             value=0,
             step=1,
             format="%d"
         )
-        team_balls = st.number_input(
+        team_balls=st.number_input(
             "Number of Balls Till Now",
             min_value=0,
             max_value=120,
@@ -442,6 +589,72 @@ elif page == "Live Win Probability Prediction":
             format="%d"
         )
     predict=st.button("Predict Live win probability",use_container_width=True)
+    payload={
+        "innings":innings,
+        "team_runs":team_runs,
+        "team_balls":team_balls,
+        "team_wicket":team_wicket,
+        "venue":venue,
+        "runs_target":runs_target,
+        "batting_team":batting_team,
+        "bowling_team":bowling_team
+    }
+    response=requests.post("http://127.0.0.1:8000/live_pred",json=payload)
+    team_colors = {
+    "Chennai Super Kings": "#F9CD05",
+    "Mumbai Indians": "#004BA0",
+    "Royal Challengers Bengaluru": "#D71920",
+    "Sunrisers Hyderabad": "#F26522",
+    "Kolkata Knight Riders": "#3A225D",
+    "Delhi Capitals": "#17449B",
+    "Rajasthan Royals": "#EA1A85",
+    "Punjab Kings": "#D71920",
+    "Lucknow Super Giants": "#00A651",
+    "Gujarat Titans": "#1C2957"
+}
+    team_short = {
+        "Chennai Super Kings":"CSK",
+        "Mumbai Indians":"MI",
+        "Royal Challengers Bengaluru":"RCB",
+        "Kolkata Knight Riders":"KKR",
+        "Sunrisers Hyderabad":"SRH",
+        "Delhi Capitals":"DC",
+        "Punjab Kings":"PBKS",
+        "Rajasthan Royals":"RR",
+        "Lucknow Super Giants":"LSG",
+        "Gujarat Titans":"GT"
+    }
     if predict:
-            st.success("Ok")
-    
+        response = requests.post("http://127.0.0.1:8000/live_pred", json=payload)
+        result = response.json()
+        batting_team_res = result["batting_team"]
+        bowling_team_res = result["bowling_team"]
+        batting_prob = int(round(result["batting_probability"]))
+        bowling_prob = int(round(result["bowling_probability"]))
+        winner = result["predicted_winner"]
+        winner_prob = max(batting_prob, bowling_prob)
+        color_a = team_colors.get(batting_team_res, "#4CAF50")
+        color_b = team_colors.get(bowling_team_res, "#2196F3")
+        winner_color = team_colors.get(winner, "#1565C0")
+        short_a = team_short.get(batting_team_res, batting_team_res)
+        short_b = team_short.get(bowling_team_res, bowling_team_res)
+        st.divider()
+        html = f"""<div style="max-width:700px;margin:auto;background:white;padding:30px;border-radius:20px;box-shadow:0px 5px 18px rgba(0,0,0,0.15);">
+            <h3 style="text-align:center;color:#1565C0;margin-bottom:25px;">🏏 Live Win Probability</h3>
+            <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-weight:bold;font-size:18px;">
+            <span style="color:{color_a};">{short_a} ({batting_prob}%)</span>
+            <span style="color:{color_b};">{short_b} ({bowling_prob}%)</span>
+            </div>
+            <div style="display:flex;width:100%;height:20px;border-radius:10px;overflow:hidden;background:#EEEEEE;">
+            <div style="width:{batting_prob}%;background:{color_a};"></div>
+            <div style="width:{bowling_prob}%;background:{color_b};"></div>
+            </div>
+            <div style="margin-top:35px;background:{winner_color};border-radius:18px;padding:25px;text-align:center;color:white;">
+            <div style="font-size:45px;">🏆</div>
+            <div style="font-size:14px;letter-spacing:2px;font-weight:bold;">PREDICTED WINNER</div>
+            <div style="font-size:32px;font-weight:800;margin-top:10px;">{winner}</div>
+            <div style="margin-top:10px;font-size:18px;">Winning Chance : <b>{winner_prob}%</b></div>
+            </div>
+            </div>"""
+
+        st.markdown(html, unsafe_allow_html=True)
