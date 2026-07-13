@@ -125,7 +125,9 @@ def live_pred(request:Live_pred):
     else:
         predicted_winner = request.bowling_team
     return {
-        "Predicted Winner": predicted_winner,
-        f"{request.batting_team} Win Probability": round(probability[0][1] * 100, 2),
-        f"{request.bowling_team} Win Probability": round(probability[0][0] * 100, 2)
-    }
+    "predicted_winner": predicted_winner,
+    "batting_team": request.batting_team,
+    "bowling_team": request.bowling_team,
+    "batting_probability": round(probability[0][1] * 100, 2),
+    "bowling_probability": round(probability[0][0] * 100, 2)
+}
