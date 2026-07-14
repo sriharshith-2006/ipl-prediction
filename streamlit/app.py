@@ -390,7 +390,7 @@ elif page == "Match Winner Prediction":
         "stage": stage,
         "date":str(match_date)
         }
-    response=requests.post("http://127.0.0.1:8000/match_winner_predict",json=payload)
+    response=requests.post("http://api:8000/match_winner_predict",json=payload)
     team_colors = {
     "Chennai Super Kings": "#F9CD05",
     "Mumbai Indians": "#004BA0",
@@ -405,7 +405,7 @@ elif page == "Match Winner Prediction":
 }
     if predict:
         result = response.json()
-        Winner = result["Predicted Winner"]
+        Winner = result["predicted_winner"]
         st.divider()
         color = team_colors.get(Winner, "#1565C0")
         def darken(hex_color, factor=0.55):
@@ -515,7 +515,7 @@ elif page == "Live Win Probability Prediction":
             value=2,
             format="%d"
         )
-        batting_team = st.selectbox(
+        Batting_team = st.selectbox(
         "Batting Team",
         [   "Select Team",
             "Chennai Super Kings",
@@ -530,7 +530,7 @@ elif page == "Live Win Probability Prediction":
             "Gujarat Titans"
         ]
     )
-        bowling_team = st.selectbox(
+        Bowling_team = st.selectbox(
         "Bowling Team",
         [   "Select Team",
             "Chennai Super Kings",
@@ -545,7 +545,7 @@ elif page == "Live Win Probability Prediction":
             "Gujarat Titans"
         ]
     )
-        venue=st.selectbox("Venue",["Select Venue",
+        Venue=st.selectbox("Venue",["Select Venue",
             "MA Chidambaram Stadium",
             "Wankhede Stadium",
             "M Chinnaswamy Stadium",
@@ -594,12 +594,12 @@ elif page == "Live Win Probability Prediction":
         "team_runs":team_runs,
         "team_balls":team_balls,
         "team_wicket":team_wicket,
-        "venue":venue,
+        "venue":Venue,
         "runs_target":runs_target,
-        "batting_team":batting_team,
-        "bowling_team":bowling_team
+        "batting_team":Batting_team,
+        "bowling_team":Bowling_team
     }
-    response=requests.post("http://127.0.0.1:8000/live_pred",json=payload)
+    response=requests.post("http://api:8000/live_pred",json=payload)
     team_colors = {
     "Chennai Super Kings": "#F9CD05",
     "Mumbai Indians": "#004BA0",
@@ -625,36 +625,56 @@ elif page == "Live Win Probability Prediction":
         "Gujarat Titans":"GT"
     }
     if predict:
-        response = requests.post("http://127.0.0.1:8000/live_pred", json=payload)
         result = response.json()
-        batting_team_res = result["batting_team"]
-        bowling_team_res = result["bowling_team"]
+        batting_team = result["batting_team"]
+        bowling_team = result["bowling_team"]
         batting_prob = int(round(result["batting_probability"]))
         bowling_prob = int(round(result["bowling_probability"]))
         winner = result["predicted_winner"]
-        winner_prob = max(batting_prob, bowling_prob)
-        color_a = team_colors.get(batting_team_res, "#4CAF50")
-        color_b = team_colors.get(bowling_team_res, "#2196F3")
+        winner_prob = batting_prob if winner == batting_team else bowling_prob
+        team_runs = result["team_runs"]
+        team_wicket = result["team_wicket"]
+        over = result["over"]
+        ball = result["ball"]
+        runs_target = result["runs_target"]
+        crr = result["current_rr"]
+        req_rr = result["required_rr"]
+        short_a = "".join(w[0] for w in batting_team.split()) 
+        short_b = "".join(w[0] for w in bowling_team.split())   
+        color_a = team_colors.get(batting_team, "#8ecbff")
+        color_b = team_colors.get(bowling_team, "#ffb3a7")
         winner_color = team_colors.get(winner, "#1565C0")
-        short_a = team_short.get(batting_team_res, batting_team_res)
-        short_b = team_short.get(bowling_team_res, bowling_team_res)
         st.divider()
         html = f"""<div style="max-width:700px;margin:auto;background:white;padding:30px;border-radius:20px;box-shadow:0px 5px 18px rgba(0,0,0,0.15);">
-            <h3 style="text-align:center;color:#1565C0;margin-bottom:25px;">🏏 Live Win Probability</h3>
-            <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-weight:bold;font-size:18px;">
-            <span style="color:{color_a};">{short_a} ({batting_prob}%)</span>
-            <span style="color:{color_b};">{short_b} ({bowling_prob}%)</span>
-            </div>
-            <div style="display:flex;width:100%;height:20px;border-radius:10px;overflow:hidden;background:#EEEEEE;">
-            <div style="width:{batting_prob}%;background:{color_a};"></div>
-            <div style="width:{bowling_prob}%;background:{color_b};"></div>
-            </div>
-            <div style="margin-top:35px;background:{winner_color};border-radius:18px;padding:25px;text-align:center;color:white;">
-            <div style="font-size:45px;">🏆</div>
-            <div style="font-size:14px;letter-spacing:2px;font-weight:bold;">PREDICTED WINNER</div>
-            <div style="font-size:32px;font-weight:800;margin-top:10px;">{winner}</div>
-            <div style="margin-top:10px;font-size:18px;">Winning Chance : <b>{winner_prob}%</b></div>
-            </div>
-            </div>"""
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="text-align:left;">
+        <div style="font-size:13px;color:#888;font-weight:600;">{short_a}</div>
+        <div style="font-size:26px;font-weight:700;color:#222;">{team_runs}/{team_wicket} <span style="font-size:14px;color:#888;">({over}.{ball} ov)</span></div>
+        </div>
+        <div style="text-align:right;">
+        <div style="font-size:13px;color:#888;font-weight:600;">TARGET</div>
+        <div style="font-size:26px;font-weight:700;color:#222;">{runs_target}</div>
+        </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:22px;padding-top:10px;border-top:1px dashed #e5e5e5;">
+        <div style="font-size:18px;color:#555;">Current RR: <b style="color:#1565C0;">{crr}</b></div>
+        <div style="font-size:18px;color:#555;">Required RR: <b style="color:#D71920;">{req_rr}</b></div>
+        </div>
+        <h3 style="text-align:center;color:#1565C0;margin-bottom:25px;">🏏 Live Win Probability</h3>
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-weight:bold;font-size:18px;">
+        <span style="color:{color_a};">{short_a} ({batting_prob}%)</span>
+        <span style="color:{color_b};">{short_b} ({bowling_prob}%)</span>
+        </div>
+        <div style="display:flex;width:100%;height:20px;border-radius:10px;overflow:hidden;background:#EEEEEE;">
+        <div style="width:{batting_prob}%;background:{color_a};"></div>
+        <div style="width:{bowling_prob}%;background:{color_b};"></div>
+        </div>
+        <div style="margin-top:35px;background:{winner_color};border-radius:18px;padding:25px;text-align:center;color:white;">
+        <div style="font-size:45px;">🏆</div>
+        <div style="font-size:14px;letter-spacing:2px;font-weight:bold;">PREDICTED WINNER</div>
+        <div style="font-size:32px;font-weight:800;margin-top:10px;">{winner}</div>
+        <div style="margin-top:10px;font-size:18px;">Winning Chance : <b>{winner_prob}%</b></div>
+        </div>
+        </div>"""
 
         st.markdown(html, unsafe_allow_html=True)
