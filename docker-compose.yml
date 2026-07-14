@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  api:
+    image: ipl-api:latest
+    container_name: ipl-api
+    ports:
+      - "8000:8000"
+
+  streamlit:
+    image: ipl-streamlit:latest
+    container_name: ipl-streamlit
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
