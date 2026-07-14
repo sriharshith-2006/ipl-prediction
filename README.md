@@ -11,7 +11,8 @@ An end-to-end machine learning application that predicts IPL match outcomes two 
   <img src="https://img.shields.io/badge/Deployed-Render-46E3B7" />
 </p>
 
-**[🚀 Live App](https://ipl-streamlit.onrender.com/) &nbsp;·&nbsp; [⚡ API Docs](https://ipl-api-9c17.onrender.com/docs)**
+🚀 **Live App:** [https://ipl-streamlit.onrender.com/](https://ipl-streamlit.onrender.com/)
+⚡ **API Docs:** [https://ipl-api-9c17.onrender.com/docs](https://ipl-api-9c17.onrender.com/docs)
 
 > ⚠️ Hosted on Render's free tier — the first request may take 30–60s to wake up the server.
 
@@ -190,15 +191,6 @@ For the live win probability model, raw match state is transformed into features
 
 ---
 
-## What I'd build next
-
-- Real-time score integration (live data feed instead of manual input)
-- Player-level performance and score prediction
-- Toss-outcome prediction
-- A full match analytics dashboard with historical trends and standings
-
----
-
 ## What I learned
 
 Shipping this end-to-end pushed me past "train a model in a notebook" into the parts that make a project actually usable: structuring an ML pipeline with two independent models, serving predictions through a validated REST API, building a UI that doesn't feel like a form dump, containerizing both services, and getting the whole thing live on Render.
@@ -210,7 +202,9 @@ Shipping this end-to-end pushed me past "train a model in a notebook" into the p
 **Janga Sriharshith**
 B.Tech in Artificial Intelligence and Data Science, IIIT Sri City
 
-[GitHub](https://github.com/YOUR_GITHUB_USERNAME) · [LinkedIn](https://linkedin.com/in/YOUR_LINKEDIN_USERNAME) · [Email](mailto:YOUR_EMAIL@example.com)
+GitHub: [https://github.com/YOUR_GITHUB_USERNAME](https://github.com/YOUR_GITHUB_USERNAME)
+LinkedIn: [https://linkedin.com/in/YOUR_LINKEDIN_USERNAME](https://linkedin.com/in/YOUR_LINKEDIN_USERNAME)
+Email: [YOUR_EMAIL@example.com](mailto:YOUR_EMAIL@example.com)
 
 ---
 
