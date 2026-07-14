@@ -390,7 +390,7 @@ elif page == "Match Winner Prediction":
         "stage": stage,
         "date":str(match_date)
         }
-    response=requests.post("http://api:8000/match_winner_predict",json=payload)
+    response=requests.post("https://ipl-api-9c17.onrender.com/match_winner_predict",json=payload)
     team_colors = {
     "Chennai Super Kings": "#F9CD05",
     "Mumbai Indians": "#004BA0",
@@ -599,7 +599,7 @@ elif page == "Live Win Probability Prediction":
         "batting_team":Batting_team,
         "bowling_team":Bowling_team
     }
-    response=requests.post("http://api:8000/live_pred",json=payload)
+    response=requests.post("https://ipl-api-9c17.onrender.com/live_pred",json=payload)
     team_colors = {
     "Chennai Super Kings": "#F9CD05",
     "Mumbai Indians": "#004BA0",
