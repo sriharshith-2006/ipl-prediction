@@ -204,11 +204,11 @@ Shipping this end-to-end pushed me past "train a model in a notebook" into the p
 **Janga Sriharshith**
 B.Tech in Artificial Intelligence and Data Science, IIIT Sri City
 
-GitHub: [https://github.com/YOUR_GITHUB_USERNAME](https://github.com/sriharshith-2006)
+GitHub: [https://github.com/sriharshith-2006]
 
-LinkedIn: [https://linkedin.com/in/YOUR_LINKEDIN_USERNAME](https://linkedin.com/in/janga-sriharshith)
+LinkedIn: [https://linkedin.com/in/janga-sriharshith)]
 
-Email: [YOUR_EMAIL@example.com](mailto:sriharshithjanga@.com)
+Email: [mailto:sriharshithjanga@.com]
 
 ---
 
