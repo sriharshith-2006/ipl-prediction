@@ -34,15 +34,15 @@ Cricket fans usually get one of two experiences: pre-match predictions from pund
 
 **Dashboard** — a quick snapshot of what the models are trained on and what they cover.
 
-![Home dashboard](images/home.png)
+![Home dashboard](home.png)
 
 **Pre-match prediction** — feed in the matchup and conditions, get a predicted winner.
 
-![Match winner prediction](images/winner_prediction.png)
+![Match winner prediction](winner_prediction.png)
 
 **Live chase tracker** — enter the current match state and get a live-updating win probability bar, styled like a broadcast graphic.
 
-![Live win probability](images/live_prediction.png)
+![Live win probability](live_prediction.png)
 
 ---
 
@@ -102,7 +102,9 @@ ipl/
 │   ├── live_pred_model.pkl
 │   └── live_pred_preprocessor.pkl
 ├── notebooks/
-├── images/
+├── home.png
+├── winner_prediction.png
+├── live_prediction.png
 └── README.md
 ```
 
@@ -202,9 +204,11 @@ Shipping this end-to-end pushed me past "train a model in a notebook" into the p
 **Janga Sriharshith**
 B.Tech in Artificial Intelligence and Data Science, IIIT Sri City
 
-GitHub: [https://github.com/YOUR_GITHUB_USERNAME](https://github.com/YOUR_GITHUB_USERNAME)
-LinkedIn: [https://linkedin.com/in/YOUR_LINKEDIN_USERNAME](https://linkedin.com/in/YOUR_LINKEDIN_USERNAME)
-Email: [YOUR_EMAIL@example.com](mailto:YOUR_EMAIL@example.com)
+GitHub: [https://github.com/YOUR_GITHUB_USERNAME](https://github.com/sriharshith-2006)
+
+LinkedIn: [https://linkedin.com/in/YOUR_LINKEDIN_USERNAME](https://linkedin.com/in/janga-sriharshith)
+
+Email: [YOUR_EMAIL@example.com](mailto:sriharshithjanga@.com)
 
 ---
 
