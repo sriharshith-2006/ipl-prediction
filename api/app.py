@@ -80,7 +80,7 @@ def predict_match_winner(request:MatchWinner):
     prediction=winner_model.predict(X)
     winner=winner_label_encoder.inverse_transform(prediction)[0]
     return{
-        "Predicted Winner":winner
+        "predicted_winner":winner
     }
 class Live_pred(BaseModel):
     innings:Literal[2]
@@ -129,5 +129,15 @@ def live_pred(request:Live_pred):
     "batting_team": request.batting_team,
     "bowling_team": request.bowling_team,
     "batting_probability": round(probability[0][1] * 100, 2),
-    "bowling_probability": round(probability[0][0] * 100, 2)
+    "bowling_probability": round(probability[0][0] * 100, 2),
+    "team_runs": request.team_runs,
+    "team_wicket": request.team_wicket,
+    "over": over,
+    "ball": ball,
+    "runs_target": request.runs_target,
+    "runs_left": runs_left,
+    "balls_left": balls_left,
+    "wickets_left": wickets_left,
+    "current_rr": round(current_rr, 2),
+    "required_rr": round(required_rr, 2)
 }
