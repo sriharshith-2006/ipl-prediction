@@ -5,6 +5,7 @@ from typing import Annotated,Literal
 from typing import Literal
 import joblib
 import pandas as pd
+import numpy as np
 Team = Literal[
     "Chennai Super Kings",
     "Mumbai Indians",
